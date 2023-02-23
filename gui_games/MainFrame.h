@@ -6,6 +6,7 @@
 #include <iostream>
 #include <string>
 #include <time.h>
+#include "TicTacToe.h"
 
 #include <stdlib.h>
 

@@ -8,15 +8,20 @@
 #include <time.h>
 #include <stdlib.h>
 
-class TicTacToe
+using namespace std;
+
+class TicTacToe : public wxFrame
 {
 public:
-	TicTacToe();
+	TicTacToe(const wxString& title, string nick);
 	char board[3][3];
 	wxBitmapButton** Buttons;
-	wxPanel* GamePanel;
+	wxPanel* panel;
+	string nickname;
 	int round_number;
-	/*void PlayGame();
+
+	void PlayGame();
+	int is_win();
 	
 	void OnButtonClicked1(wxCommandEvent& event);
 	void OnButtonClicked2(wxCommandEvent& event);
@@ -29,5 +34,5 @@ public:
 	void OnButtonClicked9(wxCommandEvent& event);
 	void OnButtonClickedEndGame(wxCommandEvent& event);
 	wxDECLARE_EVENT_TABLE();
-	*/
+	
 };

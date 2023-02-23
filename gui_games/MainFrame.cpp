@@ -18,7 +18,7 @@ wxEND_EVENT_TABLE()
 MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title)
 {
 	panel = new wxPanel(this, wxID_ANY, wxPoint(0, 0), wxSize(900, 600));
-	this->panel->SetBackgroundColour(wxColor(100, 100, 200));
+	this->panel->SetBackgroundColour(wxColor(80, 80, 150));
 
 	wxStaticText* staticText = new wxStaticText(panel, wxID_ANY, "Set your nickname:", wxPoint(395, 200)); // statyczny tekstkna::
 	this->text_to_copy = new wxTextCtrl(panel, wxID_ANY, "", wxPoint(350, 225), wxSize(200, -1));
@@ -59,7 +59,7 @@ void MainFrame::OnButtonClickedSnake(wxCommandEvent& event)
 	wxPNGHandler *handler = new wxPNGHandler;
 	wxImage::AddHandler(handler);
 	wxStaticBitmap *snake_board = new wxStaticBitmap(this->panel, wxID_ANY, wxBitmap("snake_board.png", wxBITMAP_TYPE_PNG), wxPoint(50, 50), wxSize(500, 500));
-	this->panel->SetBackgroundColour(wxColor(100, 100, 200));
+	this->panel->SetBackgroundColour(wxColor(80, 80, 150));
 
 
 	wxStaticText* staticText = new wxStaticText(this->panel, wxID_ANY, "tekst", wxPoint(600, 50)); // statyczny tekst
@@ -69,21 +69,10 @@ void MainFrame::OnButtonClickedSnake(wxCommandEvent& event)
 }
 
 void MainFrame::OnButtonClickedTicTacToe(wxCommandEvent& event){
-	this->panel->Destroy();
-	this->panel= new wxPanel(this, wxID_ANY, wxPoint(0, 0), wxSize(900, 600));
-
-	wxPNGHandler *handler = new wxPNGHandler;
-	wxImage::AddHandler(handler);
-	wxStaticBitmap *snake_board = new wxStaticBitmap(this->panel, wxID_ANY, wxBitmap("tictactoe_board.png", wxBITMAP_TYPE_PNG), wxPoint(50, 50), wxSize(500, 500));
-	this->panel->SetBackgroundColour(wxColor(100, 100, 200));
-
-
-	wxStaticText* staticText = new wxStaticText(this->panel, wxID_ANY, "Counter of rounds:", wxPoint(600, 50)); // statyczny tekst
-	//wxStaticText* staticText2 = new wxStaticText(this->panel, wxID_ANY, this->round_number, wxPoint(600, 70)); // statyczny tekst
-
-	wxStaticText* staticText3 = new wxStaticText(this->panel, wxID_ANY, this->nickname, wxPoint(600, 10)); // statyczny tekst
-
-	wxLogStatus("Tic tac toe");
+	TicTacToe* tictactoe = new TicTacToe("TicTacToe", this->nickname);
+	tictactoe->SetClientSize(900, 600);
+	tictactoe->Center();
+	tictactoe->Show();
 }
 
 void MainFrame::OnButtonClickedDices(wxCommandEvent& event){

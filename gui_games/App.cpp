@@ -1,6 +1,5 @@
 #include <wx/wx.h>
 #include "MainFrame.h"
-//#include "TicTacToe.h"
 #include "App.h"
 
 wxIMPLEMENT_APP(App);
