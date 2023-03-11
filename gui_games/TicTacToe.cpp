@@ -10,7 +10,8 @@ enum IDentities
 	Button_board_7 = 6,
 	Button_board_8 = 7,
 	Button_board_9 = 8,
-	Button_end_game
+	Button_reset = 9,
+	Button_exit = 10
 };
 
 wxBEGIN_EVENT_TABLE(TicTacToe, wxFrame)
@@ -23,37 +24,17 @@ wxBEGIN_EVENT_TABLE(TicTacToe, wxFrame)
 	EVT_BUTTON(Button_board_7, TicTacToe::OnButtonClicked7)
 	EVT_BUTTON(Button_board_8, TicTacToe::OnButtonClicked8)
 	EVT_BUTTON(Button_board_9, TicTacToe::OnButtonClicked9)
-	EVT_BUTTON(Button_end_game, TicTacToe::Reset)
+	EVT_BUTTON(Button_reset, TicTacToe::Reset)
+	EVT_BUTTON(Button_exit, TicTacToe::Exit)
 wxEND_EVENT_TABLE()
 
 TicTacToe::TicTacToe(const wxString& title, string nick) : wxFrame(nullptr, wxID_ANY, title)
 {
 	this->nickname = nick;
 	this->panel= new wxPanel(this, wxID_ANY, wxPoint(0, 0), wxSize(900, 600));
-	this->WinInfo = new wxStaticText(this->panel, wxID_ANY, "     ", wxPoint(600, 200), wxSize(100, 20));
-
-	handler = new wxPNGHandler;
-	wxImage::AddHandler(handler);
-
-	wxStaticBitmap *tictactoe_board = new wxStaticBitmap(this->panel, wxID_ANY, wxBitmap("leg_board.png", wxBITMAP_TYPE_PNG), wxPoint(170, 70), wxSize(10, 440));
-	wxStaticBitmap *tictactoe_board1 = new wxStaticBitmap(this->panel, wxID_ANY, wxBitmap("leg_board.png", wxBITMAP_TYPE_PNG), wxPoint(320, 70), wxSize(10, 440));
-	wxStaticBitmap *tictactoe_board2 = new wxStaticBitmap(this->panel, wxID_ANY, wxBitmap("leg2_board.png", wxBITMAP_TYPE_PNG), wxPoint(30, 360), wxSize(440, 10));
-	wxStaticBitmap *tictactoe_board3 = new wxStaticBitmap(this->panel, wxID_ANY, wxBitmap("leg2_board.png", wxBITMAP_TYPE_PNG), wxPoint(30, 210), wxSize(440, 10));
 	this->panel->SetBackgroundColour(wxColor(80, 80, 150));
-
-	strcpy(counter_text, "Number of rounds: 0");
-
-	wxFont font(16, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
-	wxColour color(150, 60, 200);
-
-	staticText = new wxStaticText(this->panel, wxID_ANY, counter_text, wxPoint(600, 50)); // statyczny tekst
-	wxStaticText* staticText2 = new wxStaticText(this->panel, wxID_ANY, this->nickname, wxPoint(600, 10)); // statyczny tekst
-	
-	staticText->SetFont(font);
-	staticText->SetForegroundColour(color);
-	staticText2->SetFont(font);
-	
-	wxLogStatus("Tic tac toe");
+	this->player_score = 0;
+	this->bot_score = 0;
 
 	for (int i = 0; i < 3; ++i)
 		for (int j = 0; j < 3; ++j)
@@ -62,11 +43,64 @@ TicTacToe::TicTacToe(const wxString& title, string nick) : wxFrame(nullptr, wxID
 	this->inGame = true;
 	this->round_number = 0;
 
+	create_board();
+	create_text();
+
+	this->resetButton = new wxButton(this->panel, Button_reset, "Reset", wxPoint(550, 400), wxSize(45, 20));
+	this->exitButton = new wxButton(this->panel, Button_exit, "Exit", wxPoint(600, 400), wxSize(45, 20));
+
+	wxLogStatus("Tic tac toe");
+}
+
+TicTacToe::~TicTacToe(){
+	//free_memory();
+}
+
+void TicTacToe::create_text()
+{
+	strcpy(counter_text, "Number of rounds: 0");
+
+	wxFont font(16, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+	wxFont font2(25, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+	wxColor color2(0, 200, 0);
+
+	staticText = new wxStaticText(this->panel, wxID_ANY, counter_text, wxPoint(550, 140)); // statyczny tekst
+	staticText2 = new wxStaticText(this->panel, wxID_ANY, "Nickname: " + this->nickname, wxPoint(550, 100)); // statyczny tekst
+	scoreText = new wxStaticText(this->panel, wxID_ANY, "Player score: " + to_string(this->player_score), wxPoint(550, 180));
+	scoreText2 = new wxStaticText(this->panel, wxID_ANY, "Bot score: " + to_string(this->bot_score), wxPoint(550, 220));
+	this->WinInfo = new wxStaticText(this->panel, wxID_ANY, "     ", wxPoint(600, 300), wxSize(100, 20));
+	// przeniesc Player won i Bot won i zmienic fonta, zmienic kolory nickname i scorey
+	
+	staticText->SetFont(font);
+	staticText->SetForegroundColour(wxColor(128, 128, 128));
+	staticText2->SetFont(font);
+	staticText2->SetForegroundColour(wxColor(128, 128, 128));
+	WinInfo->SetFont(font2);
+	WinInfo->SetForegroundColour(color2);
+	scoreText->SetFont(font);
+	scoreText->SetForegroundColour(color2);
+	scoreText2->SetFont(font);
+	scoreText2->SetForegroundColour(wxColor(255, 51, 51));
+}
+
+void TicTacToe::create_board()
+{
+	handler = new wxPNGHandler;
+	wxImage::AddHandler(handler);
+
+	tictactoe_board = new wxStaticBitmap * [4];
+
+	*tictactoe_board = new wxStaticBitmap(this->panel, wxID_ANY, wxBitmap("leg_board.png", wxBITMAP_TYPE_PNG), wxPoint(170, 70), wxSize(10, 440));
+	*(tictactoe_board + 1) = new wxStaticBitmap(this->panel, wxID_ANY, wxBitmap("leg_board.png", wxBITMAP_TYPE_PNG), wxPoint(320, 70), wxSize(10, 440));
+	*(tictactoe_board + 2) = new wxStaticBitmap(this->panel, wxID_ANY, wxBitmap("leg2_board.png", wxBITMAP_TYPE_PNG), wxPoint(30, 360), wxSize(440, 10));
+	*(tictactoe_board + 3) = new wxStaticBitmap(this->panel, wxID_ANY, wxBitmap("leg2_board.png", wxBITMAP_TYPE_PNG), wxPoint(30, 210), wxSize(440, 10));
+		
+
 	X.LoadFile("x.png", wxBITMAP_TYPE_PNG);
 	Circle.LoadFile("circle.png", wxBITMAP_TYPE_PNG);
 	Empty.LoadFile("empty.png", wxBITMAP_TYPE_PNG);
-	
-	this->Buttons = new wxBitmapButton * [10];
+
+	this->Buttons = new wxBitmapButton * [9];
 
 	*(this->Buttons) = new wxBitmapButton(this->panel, Button_board_1, Empty, wxPoint(30, 70), wxSize(140, 140), 0);
 	*(this->Buttons + 1) = new wxBitmapButton(this->panel, Button_board_2, Empty, wxPoint(180, 70), wxSize(140, 140), 0);
@@ -77,9 +111,7 @@ TicTacToe::TicTacToe(const wxString& title, string nick) : wxFrame(nullptr, wxID
 	*(this->Buttons + 6) = new wxBitmapButton(this->panel, Button_board_7, Empty, wxPoint(30, 370), wxSize(140, 140), 0);
 	*(this->Buttons + 7) = new wxBitmapButton(this->panel, Button_board_8, Empty, wxPoint(180, 370), wxSize(140, 140), 0);
 	*(this->Buttons + 8) = new wxBitmapButton(this->panel, Button_board_9, Empty, wxPoint(330, 370), wxSize(140, 140), 0);
-
 }
-
 
 void TicTacToe::OnButtonClicked1(wxCommandEvent& event)
 {
@@ -181,8 +213,10 @@ void TicTacToe::Reset(wxCommandEvent& event)
 	for(int i = 0; i < 9; ++i){
 		(*(this->Buttons + i))->SetBitmap(Empty);
 	}
-
-	(*(this->Buttons + 9))->Destroy();
+}
+void TicTacToe::Exit(wxCommandEvent& event)
+{
+	Close();
 }
 
 void TicTacToe::PlayGame()
@@ -200,8 +234,10 @@ void TicTacToe::PlayGame()
 		 
 		if (is_win() > 0) {
 			this->inGame = false;
-			this->WinInfo->SetLabel("Gracz wygral");
-			*(this->Buttons + 9) = new wxBitmapButton(this->panel, Button_end_game, Empty, wxPoint(600, 400), wxSize(140, 140), 0);
+			this->WinInfo->SetLabel("Player won!");
+			this->player_score++;
+			this->scoreText->SetLabel("Player score: " + to_string(this->player_score));
+			this->WinInfo->SetForegroundColour(wxColor(0, 200, 0));
 			return;
 		}
 		
@@ -219,23 +255,29 @@ void TicTacToe::PlayGame()
 
 		if (is_win() > 0) {
 			this->inGame = false;
-			this->WinInfo->SetLabel("Bot wygral");
-			*(this->Buttons + 9) = new wxBitmapButton(this->panel, Button_end_game, Empty, wxPoint(600, 400), wxSize(140, 140), 0);
+			this->WinInfo->SetForegroundColour(wxColor(255, 51, 51));
+			this->bot_score++;
+			this->scoreText2->SetLabel("Bot score: " + to_string(this->bot_score));
+			this->WinInfo->SetLabel("Bot won!");
 			return;
 		}
 	}
 	else 
 	{
 		this->inGame = false;
-		*(this->Buttons + 9) = new wxBitmapButton(this->panel, Button_end_game, Empty, wxPoint(600, 400), wxSize(140, 140), 0);
 
 		if (is_win() == 1) {
-			this->WinInfo->SetLabel("Gracz wygral");
+			this->player_score++;
+			this->scoreText->SetLabel("Player score: " + to_string(this->player_score));
+			this->WinInfo->SetLabel("Player won!");
 		}
 		else if (is_win() == 2) {
-			this->WinInfo->SetLabel("Bot wygral");
+			this->bot_score++;
+			this->scoreText2->SetLabel("Bot score: " + to_string(this->bot_score));
+			this->WinInfo->SetLabel("Bot won!");
 		}else{
-			this->WinInfo->SetLabel("REMIS");
+			this->WinInfo->SetForegroundColour(wxColor(255, 204, 0));
+			this->WinInfo->SetLabel("Draw!");
 		}
 	}
 }
@@ -284,4 +326,25 @@ int TicTacToe::is_win()
 	}
 
 	return 0;
+}
+
+void TicTacToe::free_memory()
+{
+	delete WinInfo;
+	delete scoreText;
+	delete staticText;
+	delete staticText2;
+	delete resetButton;
+	delete exitButton;
+
+	for (int i = 0; i < 4; ++i)
+		delete tictactoe_board[i];
+	delete[] tictactoe_board;
+
+	for (int i = 0; i < 9; ++i)
+		delete Buttons[i];
+	delete[] Buttons;
+
+	delete handler;
+	delete panel;
 }

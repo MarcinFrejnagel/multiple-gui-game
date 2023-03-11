@@ -14,13 +14,16 @@ class TicTacToe : public wxFrame
 {
 public:
 	TicTacToe(const wxString& title, string nick);
+	~TicTacToe();
 	char board[3][3];
-	char counter_text[30];
+	char counter_text[30], score_text[30];
 	wxBitmapButton** Buttons;
 	wxPanel* panel;
-	wxStaticText* WinInfo, *staticText;
+	wxStaticText* WinInfo, *staticText, *staticText2, *scoreText, *scoreText2;
+	wxStaticBitmap** tictactoe_board;
 	string nickname;
-	int round_number;
+	int round_number, player_score, bot_score;
+	wxButton *resetButton, *exitButton;
 	bool inGame;
 	wxPNGHandler* handler;
 	wxBitmap X, Circle, Empty;
@@ -38,6 +41,11 @@ public:
 	void OnButtonClicked8(wxCommandEvent& event);
 	void OnButtonClicked9(wxCommandEvent& event);
 	void Reset(wxCommandEvent& event);
-	wxDECLARE_EVENT_TABLE();
+	void Exit(wxCommandEvent& event);
 	
+	void free_memory();
+	void create_board();
+	void create_text();
+
+	wxDECLARE_EVENT_TABLE();
 };
