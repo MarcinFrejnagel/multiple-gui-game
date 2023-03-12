@@ -76,8 +76,12 @@ void MainFrame::OnButtonClickedTicTacToe(wxCommandEvent& event){
 }
 
 void MainFrame::OnButtonClickedDices(wxCommandEvent& event){
-	panel->Destroy();
-	panel = new wxPanel(this, wxID_ANY, wxPoint(0, 0), wxSize(900, 600));
+	Dices* dices = new Dices("Dices", nickname);
+	dices->SetClientSize(900, 600);
+	dices->Center();
+	dices->Show();
+
+	/*panel = new wxPanel(this, wxID_ANY, wxPoint(0, 0), wxSize(900, 600));
 
 	wxPNGHandler* handler = new wxPNGHandler;
 	wxImage::AddHandler(handler);
@@ -90,4 +94,5 @@ void MainFrame::OnButtonClickedDices(wxCommandEvent& event){
 	//wxTextCtrl* textCtrl = new wxTextCtrl(panel, wxID_ANY, "nickname", wxPoint(500, 145), wxSize(200, -1)); // mozliwosc wpisania tekstu do ramki
 
 	wxLogStatus("Dices");
+	*/
 }

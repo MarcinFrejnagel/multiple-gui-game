@@ -7,6 +7,7 @@
 #include <string>
 #include <time.h>
 #include "TicTacToe.h"
+#include "Dices.h"
 
 #include <stdlib.h>
 

@@ -136,11 +136,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="Dices.cpp" />
     <ClCompile Include="MainFrame.cpp" />
     <ClCompile Include="TicTacToe.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
+    <ClInclude Include="Dices.h" />
     <ClInclude Include="MainFrame.h" />
     <ClInclude Include="TicTacToe.h" />
   </ItemGroup>
