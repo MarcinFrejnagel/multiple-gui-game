@@ -24,6 +24,8 @@ MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title)
 	text_to_copy = new wxTextCtrl(panel, wxID_ANY, "", wxPoint(350, 225), wxSize(200, -1));
 	wxButton* Nick_button = new wxButton(panel, Nickname_button, "OK", wxPoint(395, 265), wxSize(100, 30)); // add przycisk
 
+	Nick_button->SetCursor(wxCursor(wxCURSOR_HAND));
+
 };
 
 void MainFrame::SetUserNickname(wxCommandEvent& event)
@@ -43,6 +45,10 @@ void MainFrame::SetUserNickname(wxCommandEvent& event)
 	wxBitmapButton* SnakeButton = new wxBitmapButton(panel, First_button, SnakeIMG, wxPoint(0, 0), wxSize(300, 800), 0);
 	wxBitmapButton* TicTacToeButton = new wxBitmapButton(panel, Second_button, TicIMG, wxPoint(300, 0), wxSize(300, 800), 0);
 	wxBitmapButton* DicesButton = new wxBitmapButton(panel, Third_button, DicesIMG, wxPoint(600, 0), wxSize(300, 800), 0);
+
+	SnakeButton->SetCursor(wxCursor(wxCURSOR_HAND));
+	TicTacToeButton->SetCursor(wxCursor(wxCURSOR_HAND));
+	DicesButton->SetCursor(wxCursor(wxCURSOR_HAND));
 
 	//wxButton* SnakeButton = new wxButton(panel, First_button, "Snake", wxPoint(200, 200), wxSize(100, 30)); // add przycisk
 	//wxStaticText* staticText = new wxStaticText(panel, wxID_ANY, "tekst i chuj", wxPoint(70, 30)); // statyczny tekst
