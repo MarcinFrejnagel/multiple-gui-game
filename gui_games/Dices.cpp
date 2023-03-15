@@ -1,13 +1,5 @@
 #include "Dices.h"
 
-enum IDentities
-{
-    buttonThrowID = 0,
-    buttonExitID = 1,
-    buttonSaveID = 2,
-    buttonRestartID = 3
-};
-
 wxBEGIN_EVENT_TABLE(Dices, wxFrame)
 EVT_BUTTON(buttonThrowID, Dices::throwDices)
 EVT_BUTTON(buttonExitID, Dices::exitDices)
@@ -41,9 +33,9 @@ void Dices::createText()
 {
     wxFont fontInfo(15, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_EXTRABOLD);
     wxFont fontText(16, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
-    wxColor color2(0, 0, 0);
+    wxColor backgroundColor(147, 112, 219);
 
-    winInfo = new wxStaticText(this, wxID_ANY, " ", wxPoint(407, 220), wxSize(100, 50));
+    winInfo = new wxStaticText(this, wxID_ANY, " ", wxPoint(407, 220), wxSize(50, 10));
     throwCounterInfo = new wxStaticText(this, wxID_ANY, "Throws left: 3", wxPoint(550, 330), wxSize(50, 10));
     pointsInfo = new wxStaticText(this, wxID_ANY, "Points: " + to_string(getPoints()), wxPoint(550, 370), wxSize(50, 10));
 
@@ -51,10 +43,10 @@ void Dices::createText()
     winInfo->SetBackgroundColour(wxColor(147, 112, 219));
 
     throwCounterInfo->SetFont(fontText);
-    throwCounterInfo->SetBackgroundColour(wxColor(147, 112, 219));
+    throwCounterInfo->SetBackgroundColour(backgroundColor);
 
     pointsInfo->SetFont(fontText);
-    pointsInfo->SetBackgroundColour(wxColor(147, 112, 219));
+    pointsInfo->SetBackgroundColour(backgroundColor);
 }
 
 void Dices::createButtons()
@@ -87,7 +79,20 @@ void Dices::createButtons()
 
 Dices::~Dices()
 {
+    delete buttonThrow;
+    delete buttonSave;
+    delete buttonRestart;
+    delete buttonExit;
+    delete grid;
+    delete winInfo;
+    delete throwCounterInfo;
+    delete pointsInfo;
 
+    for (int i = 0; i < 5; ++i)
+        delete dices[i];
+    delete[] dices;
+
+    delete panel;
 }
 
 void Dices::setGrid()
@@ -113,20 +118,22 @@ void Dices::setGrid()
     grid->SetRowLabelValue(12, "Chance");
     grid->SetRowLabelValue(13, "Sum of points");
 
-    grid->SetLabelBackgroundColour(wxColor(210, 105, 30));
+    grid->SetLabelBackgroundColour(wxColor(245, 222, 179));
     grid->SetBackgroundColour(wxColor(32, 178, 170));
     grid->SetCellBackgroundColour(13, 0, wxColor(50, 205, 50));
     grid->SetCellBackgroundColour(13, 1, wxColor(220, 20, 60));
+    grid->SetGridLineColour(wxColour(100, 100, 100));
 
-    for(int i = 0; i < 14; i++)
+    for (int i = 0; i < 2; ++i)
+    {
+        for (int j = 0; j < 13; ++j)
+            grid->SetCellBackgroundColour(j, i, wxColor(255, 255, 204));
+    }
+
+    for(int i = 0; i < 14; ++i)
         grid->SetRowSize(i, 30);
 
     grid->SetSize(wxSize(240, 450));
-
-    //grid->SetDefaultCellBackgroundColour(wxColour(0, 0, 255));
-    //grid->SetLabelBackgroundColour(wxColour(255, 0, 0));
-
-    //grid->SetGridFrozenBorderColour(wxColor(150, 150, 150));
 
     for (int i = 0; i < 2; ++i)
     {
@@ -173,7 +180,7 @@ void Dices::loadBitmaps()
 
 void Dices::drawNumber()
 {
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 5; ++i) {
         diceScore[i] = rand() % 6 + 1;
         dices[i]->SetBitmap(dicesBitmaps[diceScore[i] - 1]);
     }
@@ -182,27 +189,20 @@ void Dices::drawNumber()
 void Dices::throwDices(wxCommandEvent& event)
 {
     if (botPlaying == false && roundNumber < 13) {
-        if (throwCounter < 2) {
-            drawNumber(); 
-            pointsInfo->SetLabel("Points: " + to_string(getPoints()));
-            throwCounter++;
-            throwCounterInfo->SetLabel("Throws left: " + to_string(3 - throwCounter));
-        }
-        else if (throwCounter == 2)
-        {
-            drawNumber();
-            throwCounter++;
-            throwCounterInfo->SetLabel("Throws left: " + to_string(3 - throwCounter));
-            pointsInfo->SetLabel("Points: " + to_string(getPoints()));
-            Sleep(1500);
+
+        drawNumber();
+        pointsInfo->SetLabel("Points: " + to_string(getPoints()));
+        throwCounter++;
+        throwCounterInfo->SetLabel("Throws left: " + to_string(3 - throwCounter));
+        if (throwCounter == 3)
             savePointsToGrid(0);
-        }
     }
 }
 
 void Dices::exitDices(wxCommandEvent& event)
 {
-    Close();
+    if (botPlaying == false)
+        Close();
 }
 
 void Dices::savePoints(wxCommandEvent& event)
@@ -226,6 +226,8 @@ void Dices::savePointsToGrid(int player)
 
     if (player == 0){
         botPlaying = true;
+        if (throwCounter == 3)
+            Sleep(1500);
         playBot();
         throwCounter = 0;    
         throwCounterInfo->SetLabel("Throws left: " + to_string(3 - throwCounter));
@@ -253,7 +255,7 @@ void Dices::playBot()
         
     }
 
-    if(!savedPoints){
+    if(savedPoints == 0){
         savePointsToGrid(1);
     }
 
@@ -278,7 +280,7 @@ int Dices::getPoints()
         result = findTheSameDices(3);
 
     }
-    else if (roundNumber == 7) {
+    else if (roundNumber == 1) {
         result = findTheSameDices(4);
 
     }
@@ -394,23 +396,25 @@ int Dices::findFromTo(int choice)
 
 void Dices::restartGame(wxCommandEvent& event)
 {
-    drawNumber();
-    throwCounter = 0;
-    roundNumber = 0;
+    if (botPlaying == false) {
+        drawNumber();
+        throwCounter = 0;
+        roundNumber = 0;
 
-    for (int i = 0; i < 2; ++i)
-    {
-        for (int j = 0; j < 14; ++j) {
-            grid->SetCellValue(j, i, " ");
-            *(*(scores + i) + j) = 0;
+        for (int i = 0; i < 2; ++i)
+        {
+            for (int j = 0; j < 14; ++j) {
+                grid->SetCellValue(j, i, " ");
+                *(*(scores + i) + j) = 0;
+            }
         }
-    }
 
-    grid->SetCellValue(13, 0, to_string(0));
-    grid->SetCellValue(13, 1, to_string(0));
-    winInfo->SetLabel(" ");
-    throwCounterInfo->SetLabel("Throws left: 3");
-    pointsInfo->SetLabel("Points: " + to_string(getPoints()));
+        grid->SetCellValue(13, 0, to_string(0));
+        grid->SetCellValue(13, 1, to_string(0));
+        winInfo->SetLabel(" ");
+        throwCounterInfo->SetLabel("Throws left: 3");
+        pointsInfo->SetLabel("Points: " + to_string(getPoints()));
+    }
 }
 
 void Dices::winner()
@@ -424,15 +428,14 @@ void Dices::winner()
     else if(scores[0][13] == scores[1][13])
     {
         winInfo->SetForegroundColour(wxColor(255, 204, 0));
-        winInfo->SetPosition(wxPoint(580, 95));
+        winInfo->SetPosition(wxPoint(430, 220));
         winInfo->SetLabel("Draw!");
     }
     else
     {
         winInfo->SetForegroundColour(wxColor(220, 20, 60));
-        winInfo->SetPosition(wxPoint(715, 220));
+        winInfo->SetPosition(wxPoint(415, 220));
         winInfo->SetLabel("Bot won!");
     }
     
 }
-

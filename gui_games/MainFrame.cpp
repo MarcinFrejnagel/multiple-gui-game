@@ -18,13 +18,21 @@ wxEND_EVENT_TABLE()
 MainFrame::MainFrame(const wxString& title) : wxFrame(nullptr, wxID_ANY, title)
 {
 	panel = new wxPanel(this, wxID_ANY, wxPoint(0, 0), wxSize(900, 600));
-	panel->SetBackgroundColour(wxColor(80, 80, 150));
+	panel->SetBackgroundColour(wxColor(102, 205, 170));
 
-	wxStaticText* staticText = new wxStaticText(panel, wxID_ANY, "Set your nickname:", wxPoint(395, 200)); // statyczny tekstkna::
-	text_to_copy = new wxTextCtrl(panel, wxID_ANY, "", wxPoint(350, 225), wxSize(200, -1));
-	wxButton* Nick_button = new wxButton(panel, Nickname_button, "OK", wxPoint(395, 265), wxSize(100, 30)); // add przycisk
+	wxFont fontNickname(15, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+	wxFont fontButton(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+
+	wxStaticText* staticText = new wxStaticText(panel, wxID_ANY, "Set your nickname:", wxPoint(365, 195)); // statyczny tekstkna::
+	text_to_copy = new wxTextCtrl(panel, wxID_ANY, "", wxPoint(350, 225), wxSize(200, 30));
+	wxButton* Nick_button = new wxButton(panel, Nickname_button, "OK", wxPoint(405, 265), wxSize(90, 50)); // add przycisk
+	
+	staticText->SetFont(fontNickname);
+	text_to_copy->SetFont(fontNickname);
 
 	Nick_button->SetCursor(wxCursor(wxCURSOR_HAND));
+	Nick_button->SetFont(fontButton);
+	Nick_button->SetBackgroundColour(wxColour(100, 250, 100));
 
 };
 

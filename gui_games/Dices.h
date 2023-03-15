@@ -11,6 +11,14 @@
 
 using namespace std;
 
+enum IDentities
+{
+	buttonThrowID = 0,
+	buttonExitID = 1,
+	buttonSaveID = 2,
+	buttonRestartID = 3
+};
+
 class Dices : public wxFrame
 {
 public:
