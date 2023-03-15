@@ -17,8 +17,10 @@ public:
 	Dices(const wxString& title, string nick);
 	~Dices();
 	string nickname;
+	bool botPlaying;
 	wxPanel* panel;
 	wxStaticBitmap **dices;
+	wxStaticText* winInfo, *throwCounterInfo, *pointsInfo;
 	wxBitmap dicesBitmaps[6];
 	int diceScore[5];
 	wxButton* buttonThrow, *buttonExit, *buttonSave, *buttonRestart;
@@ -35,10 +37,15 @@ public:
 	wxDECLARE_EVENT_TABLE();
 
 private:
+	void createButtons();
+	void createText();
 	void setGrid();
 	void loadBitmaps();
 	void drawNumber();
 	int findTheSameDices(int numberOfDices);
 	int find3x2x();
 	int findFromTo(int choice);
+	void playBot();
+	int getPoints();
+	void winner();
 };

@@ -292,11 +292,13 @@ void TicTacToe::PlayGame()
 			player_score++;
 			scoreTextPlayer->SetLabel("Player score: " + to_string(player_score));
 			WinInfo->SetPosition(wxPoint(600, 300));
+			WinInfo->SetForegroundColour(wxColor(0, 200, 0));
 			WinInfo->SetLabel("Player won!");
 		}
 		else if (is_win() == 2) {
 			bot_score++;
 			scoreTextBot->SetLabel("Bot score: " + to_string(bot_score));
+			WinInfo->SetForegroundColour(wxColor(255, 51, 51));
 			WinInfo->SetPosition(wxPoint(620, 300));
 			WinInfo->SetLabel("Bot won!");
 		}
