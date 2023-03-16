@@ -5,7 +5,7 @@
 wxIMPLEMENT_APP(App);
 
 bool App::OnInit(){
-	MainFrame* mainFrame = new MainFrame("Mini_Games");
+	MainFrame* mainFrame = new MainFrame("Mini Games");
 	mainFrame->SetClientSize(900, 600);
 	mainFrame->Center();
 	mainFrame->Show();
