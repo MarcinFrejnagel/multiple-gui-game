@@ -12,40 +12,40 @@ using namespace std;
 
 class TicTacToe : public wxFrame
 {
-public:
-	TicTacToe(const wxString& title, string nick);
-	~TicTacToe();
+private:
 	char board[3][3];
-	char counter_text[30], score_text[30];
+	char counterOfText[30];
 	wxBitmapButton** buttons;
 	wxPanel* panel;
-	wxStaticText* WinInfo, * counterText, * nicknameText, * scoreTextPlayer, * scoreTextBot;
-	wxStaticBitmap** tictactoe_board;
+	wxStaticText* winInfo, * counterText, * nicknameText, * scoreTextPlayer, * scoreTextBot;
+	wxStaticBitmap** tictactoeBoard;
 	string nickname;
-	int round_number, player_score, bot_score;
+	int roundNumber, playerScore, botScore;
 	wxButton* resetButton, * exitButton;
 	bool inGame;
 	wxPNGHandler* handler;
 	wxBitmap x, circle, empty;
 
-	void PlayGame();
+	void buttonClicked1(wxCommandEvent& event);
+	void buttonClicked2(wxCommandEvent& event);
+	void buttonClicked3(wxCommandEvent& event);
+	void buttonClicked4(wxCommandEvent& event);
+	void buttonClicked5(wxCommandEvent& event);
+	void buttonClicked6(wxCommandEvent& event);
+	void buttonClicked7(wxCommandEvent& event);
+	void buttonClicked8(wxCommandEvent& event);
+	void buttonClicked9(wxCommandEvent& event);
+	void reset(wxCommandEvent& event);
+	void exit(wxCommandEvent& event);
+
+	void playGame();
 	int is_win();
-
-	void OnButtonClicked1(wxCommandEvent& event);
-	void OnButtonClicked2(wxCommandEvent& event);
-	void OnButtonClicked3(wxCommandEvent& event);
-	void OnButtonClicked4(wxCommandEvent& event);
-	void OnButtonClicked5(wxCommandEvent& event);
-	void OnButtonClicked6(wxCommandEvent& event);
-	void OnButtonClicked7(wxCommandEvent& event);
-	void OnButtonClicked8(wxCommandEvent& event);
-	void OnButtonClicked9(wxCommandEvent& event);
-	void Reset(wxCommandEvent& event);
-	void Exit(wxCommandEvent& event);
-
-	void free_memory();
 	void create_board();
 	void create_text();
+
+public:
+	TicTacToe(const wxString& title, string nick);
+	~TicTacToe();
 
 	wxDECLARE_EVENT_TABLE();
 };
