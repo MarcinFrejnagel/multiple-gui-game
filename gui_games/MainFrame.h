@@ -30,11 +30,12 @@ private:
 	wxBitmapButton* ticTacToeButton, *dicesButton;
 	wxPNGHandler* handler;
 
-	void setDesign();
-	void createButtons();
 	void setUserNickname(wxCommandEvent& event);
 	void buttonClickedTicTacToe(wxCommandEvent& event);
 	void buttonClickedDices(wxCommandEvent& event);
+
+	void setDesign();
+	void createButtons();
 
 public:
 	MainFrame(const wxString& title);
