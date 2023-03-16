@@ -6,26 +6,39 @@
 #include <iostream>
 #include <string>
 #include <time.h>
+#include <stdlib.h>
 #include "TicTacToe.h"
 #include "Dices.h"
 
-#include <stdlib.h>
-
 using namespace std;
+
+enum IDs
+{
+	ticTacClick = 0,
+	dicesClick = 1,
+	nicknameClick = 2
+};
 
 class MainFrame : public wxFrame
 {
-public:
-	MainFrame(const wxString& title);
+private:
 	wxPanel* panel;
 	string nickname;
-	wxTextCtrl* text_to_copy;
-private:
-	void SetUserNickname(wxCommandEvent &event);
+	wxTextCtrl* setNickText;
+	wxStaticText* nickText;
+	wxButton* nickButton;
+	wxBitmapButton* ticTacToeButton, *dicesButton;
+	wxPNGHandler* handler;
 
-	void OnButtonClickedSnake(wxCommandEvent &event);
-	void OnButtonClickedTicTacToe(wxCommandEvent &event);
-	void OnButtonClickedDices(wxCommandEvent &event);
-	void OnButtonClickedBeetween(wxCommandEvent &event);
+	void setDesign();
+	void createButtons();
+	void setUserNickname(wxCommandEvent& event);
+	void buttonClickedTicTacToe(wxCommandEvent& event);
+	void buttonClickedDices(wxCommandEvent& event);
+
+public:
+	MainFrame(const wxString& title);
+	~MainFrame();
+
 	wxDECLARE_EVENT_TABLE();
 };
