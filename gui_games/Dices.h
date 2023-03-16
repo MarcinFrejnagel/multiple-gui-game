@@ -21,9 +21,7 @@ enum IDentities
 
 class Dices : public wxFrame
 {
-public:
-	Dices(const wxString& title, string nick);
-	~Dices();
+private:
 	string nickname;
 	bool botPlaying;
 	wxPanel* panel;
@@ -37,14 +35,11 @@ public:
 	int throwCounter, roundNumber, scores[2][14];
 
 	void throwDices(wxCommandEvent& event);
-	void exitDices(wxCommandEvent& event);
+	void exit(wxCommandEvent& event);
 	void savePoints(wxCommandEvent& event);
-	void restartGame(wxCommandEvent& event);
+	void reset(wxCommandEvent& event);
+	
 	void savePointsToGrid(int player);
-
-	wxDECLARE_EVENT_TABLE();
-
-private:
 	void createButtons();
 	void createText();
 	void setGrid();
@@ -56,4 +51,10 @@ private:
 	void playBot();
 	int getPoints();
 	void winner();
+
+public:
+	Dices(const wxString& title, string nick);
+	~Dices();
+	
+	wxDECLARE_EVENT_TABLE();
 };
