@@ -6,7 +6,7 @@ Tic Tac Toe is a player vs bot game where each one takes turns marking either "X
 The objective of the game is to get three marks in a row, either horizontally, vertically, or diagonally.
 If all spaces are filled and no player has achieved a winning combination, the game is a tie.
 
-![image](https://user-images.githubusercontent.com/94419693/225740246-dfd9bb0f-50f1-4190-be39-898e03c00bb4.png)
+![image](https://user-images.githubusercontent.com/94419693/225742770-a2444e1c-4e05-4b8c-a29f-7497d03e1cb6.png)
 
 ## Dices
 
@@ -14,15 +14,14 @@ Dices is a game where players roll one or more dice and try to achieve the highe
 Each player (user or bot) takes turns rolling the dices till the score will be satisfied.
 The player with the highest score at the end of the game wins.
 
-![image](https://user-images.githubusercontent.com/94419693/225740663-3a4a29b0-0cc8-464f-a1a6-b088fe8bc3c9.png)
+![image](https://user-images.githubusercontent.com/94419693/225743291-24c4e80a-afc4-40cf-afef-543a0c83f185.png)
 
 ## Important library
 
 WxWidgets is library which has been used to create GUI to get interaction with user.
 To install this library on Visual Studio 2022 I recommend watching this video:
-```c
+
 [wxWidgets installation](https://www.youtube.com/watch?v=ONYW3hBbk-8&ab_channel=OttoBotCode)
-```
 
 ## User Interface
 
