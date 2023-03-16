@@ -21,11 +21,16 @@ The player with the highest score at the end of the game wins.
 WxWidgets is library which has been used to create GUI to get interaction with user.
 To install this library on Visual Studio 2022 I recommend watching this video:
 ```c
-https://www.youtube.com/watch?v=ONYW3hBbk-8&ab_channel=OttoBotCode
+[wxWidgets installation](https://www.youtube.com/watch?v=ONYW3hBbk-8&ab_channel=OttoBotCode)
 ```
 
 ## User Interface
 
-![image](https://user-images.githubusercontent.com/94419693/225739750-0bbfd446-fc37-4a24-ae0e-b4de613d37ed.png)
-![image](https://user-images.githubusercontent.com/94419693/225739876-19665877-37c6-45ff-a4f6-d791b1bba580.png)
+### Set nickname
+
+![image](https://user-images.githubusercontent.com/94419693/225741782-9604be13-8376-41e0-9acd-c8235bae07b3.png)
+
+### Menu
+
+![image](https://user-images.githubusercontent.com/94419693/225742026-b36849a3-dc95-47b5-98a4-f5fb8cc4118f.png)
 
