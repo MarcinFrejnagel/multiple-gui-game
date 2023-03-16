@@ -226,7 +226,6 @@ void Dices::loadBitmaps()
     }
 
     drawNumber();
-
 }
 
 void Dices::drawNumber()
@@ -267,7 +266,6 @@ void Dices::savePoints(wxCommandEvent& event)
     {
         savePointsToGrid(0);
     }
-
 }
 
 void Dices::savePointsToGrid(int player)
